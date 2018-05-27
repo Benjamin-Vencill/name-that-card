@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios'
 import Board from './Board.js';
 
 export default class Game extends Component {
@@ -6,9 +7,9 @@ export default class Game extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            card_name: null,
-            card_type: null,
-            card_image: null,
+            cardName: '***',
+            cardType: '',
+            cardImage: '',
             showCardImage: false,
         }
     }
@@ -17,13 +18,36 @@ export default class Game extends Component {
         this.getRandomCard();
     }
 
-    getRandomCard() {
+
+    getRandomCard(){
+        axios.get('https://api.scryfall.com/cards/random')
+        .then((response) => {
+            console.log("Got Card: " + response.data.name);
+            this.setState({
+                cardName: response.data.name.toUpperCase(),
+                cardType: response.data.type_line.split('—')[0].toLocaleUpperCase(),
+                cardImage: 'https://img.scryfall.com/cards/small/en/' +
+                            response.data.set + '/' +
+                            response.data.collector_number +
+                            '.jpg', 
+            });
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+        this.forceUpdate();
+    }
+
+    getLocalCard_() {
         //TODO: make call to scryfall
-        var response = this.getLocalCard()
+        var response = this.getLocalCard();
         this.setState({
-            card_name: response.name.toUpperCase(),
-            card_type: response.type_line.split('—')[0].toLocaleUpperCase(),
-            card_image: response.image_uris.small, 
+            cardName: response.name.toUpperCase(),
+            cardType: response.type_line.split('—')[0].toLocaleUpperCase(),
+            cardImage: 'https://img.scryfall.com/cards/small/en/' +
+                            response.set + '/' +
+                            response.collector_number +
+                            '.jpg',
         });
     }
 
@@ -142,14 +166,14 @@ export default class Game extends Component {
                 <div className="game-board">
                     <Board 
                         // typeline={this.state.card_type}
-                        typeline={this.state.card_type}
-                        keyword={this.state.card_name}
+                        typeline={this.state.cardType}
+                        cardName={this.state.cardName}
                         showCardImage={() => this.showCardImage()}>
                     </Board>
                 </div>
                 <div className="card-pane-container">
                     {this.state.showCardImage ? 
-                        <img src={this.state.card_image} alt={this.state.card_name}/> : null
+                        <img src={this.state.cardImage} alt={this.state.cardName}/> : null
                     }
                 </div>
             </div>
