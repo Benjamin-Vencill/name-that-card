@@ -7,9 +7,11 @@ export default class Board extends Component {
         super(props);
         this.state = {
             squares: Array(52).fill(null),
-            squares_blank: Array(this.props.keyword.length).fill(null),
-            squares_answer: this.props.keyword.split(""),
         };
+    }
+
+    componentWillMount() {
+        console.log(this.props.cardName);
     }
 
     renderSquare(i) {
@@ -35,14 +37,14 @@ export default class Board extends Component {
 
     handleClick(i) {
         const squares = this.state.squares.slice();
-        squares[i] = this.state.squares_answer[i];
+        squares[i] = this.props.cardName.split("")[i];
         this.setState({squares: squares});
     }
 
     startGame() {
         console.log("Game Started!");
         var arr = [];
-        for (let j = 0; j < this.state.squares_blank.length; j++) {
+        for (let j = 0; j < this.props.cardName.length; j++) {
             arr.push(j);
         }
         arr = this.shuffle(arr);
@@ -65,13 +67,13 @@ export default class Board extends Component {
     }
 
     revealTiles(arr) {
-        for (let i=0; i < this.state.squares_blank.length; i++) {
+        for (let i=0; i < this.props.cardName.length; i++) {
             setTimeout(() => this.handleClick(arr[i]), 1000*(i+1));
         }
     }
 
     revealCard() {
-        setTimeout(() => this.props.showCardImage(), 1000*(this.state.squares_blank.length + 1));
+        setTimeout(() => this.props.showCardImage(), 1000*(this.props.cardName.length + 1));
     }
 
     render() {
