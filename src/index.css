@@ -13,13 +13,29 @@ ol, ul {
   display: table;
 }
 
-.status {
-  margin-bottom: 10px;
+.typeline {
+  margin: auto;
+  width: fit-content;
 }
 
 .square {
   background: #fff;
   border: 1px solid #999;
+  float: left;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 34px;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  width: 34px;
+}
+
+.spacer {
+  background: none;
+  border: 1px none;
   float: left;
   font-size: 24px;
   font-weight: bold;
@@ -47,4 +63,14 @@ ol, ul {
 
 .game-info {
   margin-left: 20px;
+}
+
+.game-board {
+  margin-top: auto;
+  height: fit-content;
+
+}
+
+.card-pane-container {
+  margin-left: 30px;
 }
